@@ -1,20 +1,29 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private authenticated = false;
+  private auth = getAuth();
 
-  isAuthenticated(): boolean {
-    return this.authenticated;
+  constructor(private router: Router) {}
+
+  async login(email: string, password: string): Promise<void> {
+    await signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  login() {
-    this.authenticated = true;
+  async register(email: string, password: string): Promise<void> {
+    await createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  logout() {
-    this.authenticated = false;
+  async logout(): Promise<void> {
+    await signOut(this.auth);
+    this.router.navigate(['/home']);
+  }
+
+  getCurrentUser() {
+    return this.auth.currentUser;
   }
 }

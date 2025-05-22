@@ -14,6 +14,5 @@ import { RegistroPage } from './registro.page';
     IonicModule,
     RegistroPageRoutingModule
   ],
-  declarations: [RegistroPage]
 })
 export class RegistroPageModule {}

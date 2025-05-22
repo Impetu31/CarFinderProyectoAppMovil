@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
   loginForm: FormGroup;
@@ -20,22 +20,20 @@ export class LoginPage {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', Validators.required],
     });
   }
 
   async onSubmit() {
-    if (this.loginForm.invalid) return;
-
     const { email, password } = this.loginForm.value;
     try {
       await this.authService.login(email, password);
-      this.router.navigate(['/tabs']);
+      this.router.navigate(['/tabs/tab1']);
     } catch (error: any) {
       const toast = await this.toastController.create({
         message: 'Error al iniciar sesión: ' + error.message,
         duration: 2000,
-        color: 'danger'
+        color: 'danger',
       });
       await toast.present();
     }

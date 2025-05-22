@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registro',
@@ -20,28 +20,20 @@ export class RegistroPage {
   ) {
     this.registroForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', Validators.required],
     });
   }
 
   async onSubmit() {
-    if (this.registroForm.invalid) return;
-
     const { email, password } = this.registroForm.value;
     try {
       await this.authService.register(email, password);
-      const toast = await this.toastController.create({
-        message: 'Registro exitoso',
-        duration: 2000,
-        color: 'success'
-      });
-      await toast.present();
       this.router.navigate(['/login']);
     } catch (error: any) {
       const toast = await this.toastController.create({
         message: 'Error en el registro: ' + error.message,
         duration: 2000,
-        color: 'danger'
+        color: 'danger',
       });
       await toast.present();
     }
