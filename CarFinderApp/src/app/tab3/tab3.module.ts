@@ -13,8 +13,8 @@ import { Tab3Page } from './tab3.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    Tab3PageRoutingModule
+    Tab3PageRoutingModule,
+    Tab3Page
   ],
-  declarations: [Tab3Page]
 })
 export class Tab3PageModule {}

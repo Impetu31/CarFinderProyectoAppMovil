@@ -1,41 +1,25 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { IonHeader } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
-  styleUrls: ['./registro.page.scss'],
+  styleUrls: ['./registro.page.scss']
 })
 export class RegistroPage {
-  registroForm: FormGroup;
+  email: string = '';
+  password: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private toastController: ToastController
-  ) {
-    this.registroForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  async onSubmit() {
-    const { email, password } = this.registroForm.value;
+  async register() {
     try {
-      await this.authService.register(email, password);
-      this.router.navigate(['/login']);
-    } catch (error: any) {
-      const toast = await this.toastController.create({
-        message: 'Error en el registro: ' + error.message,
-        duration: 2000,
-        color: 'danger',
-      });
-      await toast.present();
+      await this.authService.register(this.email, this.password);
+      this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Error al registrar:', error);
     }
   }
 }
